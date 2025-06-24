@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 import os
 
 def send_email():
-    url = 'https://github.com/Deepandeeps29/sample.git'
+    url = 'https://github.com/Deepandeeps29/All_Report.git'
     sender = 'deepanvinayagam1411@gmail.com'
     recipient = [
         'deepanvinayagam1411@gmail.com',

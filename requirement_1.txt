@@ -24,6 +24,8 @@ CI Email send
 pip install -r requirements.txt
 pytest --html=report.html --self-contained-html
 python send_email.py
+python push_and_email.py
+
 
 
 

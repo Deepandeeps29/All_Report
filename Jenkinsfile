@@ -31,7 +31,6 @@ pipeline {
             steps {
                 // Check if the report file exists before sending
                 bat 'if exist report.html python send_email.py'
-                bat '${url}'
             }
         }
 
@@ -54,8 +53,8 @@ pipeline {
                 emailext (
                     subject: "🧪 Test Report - Jenkins Build #${BUILD_NUMBER}",
                     body: "Hello Team,<br><br>Please find the attached <b>HTML Test Report</b> for Jenkins Build #${BUILD_NUMBER}.<br><br>Regards,<br>Jenkins",
-                    to: 'deepanvinayagam2912@gmail.com',
-                    from: 'deepanvinayagam2912@gmail.com',
+                    to: 'deepanvinayagam1411@gmail.com',
+                    from: 'deepanvinayagam1411@gmail.com',
                     attachLog: false,
                     attachmentsPattern: 'report.html'
                 )

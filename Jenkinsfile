@@ -6,12 +6,9 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-token',
-                    url: 'https://github.com/Deepandeeps29/All_Report.git',
-                    branch: 'main'
+                git url: 'https://github.com/Deepandeeps29/All_Report.git'
             }
         }
 
@@ -23,48 +20,28 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat "pytest Runnerclass/test_demo_page.py --html=${REPORT_FILE} --self-contained-html"
+                script {
+                    def exitCode = bat(script: "pytest Runnerclass/test_demo_page.py --html=${REPORT_FILE} --self-contained-html", returnStatus: true)
+                    echo "⚠️ Test stage exit code: ${exitCode}"
+                }
             }
         }
 
         stage('Send Email Report via Python') {
-            steps {
-                // Check if the report file exists before sending
-                bat 'if exist report.html python send_email.py'
+            when {
+                expression { fileExists('report.html') }
             }
-        }
-
-        stage('Archive Report (Optional UI Access)') {
             steps {
-                archiveArtifacts artifacts: 'report.html', onlyIfSuccessful: true
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: '.',
-                    reportFiles: 'report.html',
-                    reportName: 'Selenium Test Report'
-                ])
-            }
-        }
-
-        stage('Send Email') {
-            steps {
-                emailext (
-                    subject: "🧪 Test Report - Jenkins Build #${BUILD_NUMBER}",
-                    body: "Hello Team,<br><br>Please find the attached <b>HTML Test Report</b> for Jenkins Build #${BUILD_NUMBER}.<br><br>Regards,<br>Jenkins",
-                    to: 'deepanvinayagam1411@gmail.com',
-                    from: 'deepanvinayagam1411@gmail.com',
-                    attachLog: false,
-                    attachmentsPattern: 'report.html'
-                )
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    bat "python send_email.py"
+                }
             }
         }
     }
 
     post {
         always {
-            echo "📨 Pipeline finished. Email report was sent using Python script if available."
+            echo '✅ Pipeline finished. Email attempted.'
         }
     }
 }

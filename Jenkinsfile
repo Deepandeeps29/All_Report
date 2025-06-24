@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git credentialsId: 'github-token',
-                    url: 'https://github.com/Deepandeeps29/Automation_Pratice_Site.git',
+                    url: 'https://github.com/Deepandeeps29/All_Report.git',
                     branch: 'main'
             }
         }

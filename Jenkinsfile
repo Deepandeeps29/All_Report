@@ -31,6 +31,7 @@ pipeline {
             steps {
                 // Check if the report file exists before sending
                 bat 'if exist report.html python send_email.py'
+                bat '${url}'
             }
         }
 

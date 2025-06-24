@@ -5,6 +5,7 @@ from email.mime.text import MIMEText
 import os
 
 def send_email():
+    url = 'https://github.com/Deepandeeps29/Automation_Pratice_Site.git'
     sender = 'deepanvinayagam1411@gmail.com'
     recipient = [
         'deepanvinayagam1411@gmail.com',
@@ -38,8 +39,10 @@ def send_email():
             server.login(sender, app_password)
             server.send_message(msg)
             print("Email sent successfully!")
+            print(f"{url}")
     except Exception as e:
         print(f"Email send failed: {e}")
+        print(f"{url}")
 
 if __name__ == "__main__":
     print(f"Current dir: {os.getcwd()}")

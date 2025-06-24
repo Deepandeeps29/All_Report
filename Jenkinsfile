@@ -47,6 +47,19 @@ pipeline {
                 ])
             }
         }
+
+        stage('Send Email') {
+            steps {
+                emailext (
+                    subject: "🧪 Test Report - Jenkins Build #${BUILD_NUMBER}",
+                    body: "Hello Team,<br><br>Please find the attached <b>HTML Test Report</b> for Jenkins Build #${BUILD_NUMBER}.<br><br>Regards,<br>Jenkins",
+                    to: 'deepanvinayagam2912@gmail.com',
+                    from: 'deepanvinayagam2912@gmail.com',
+                    attachLog: false,
+                    attachmentsPattern: 'report.html'
+                )
+            }
+        }
     }
 
     post {

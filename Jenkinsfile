@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     def exitCode = bat(script: "pytest Runnerclass/test_demo_page.py --html=${REPORT_FILE} --self-contained-html", returnStatus: true)
-                    echo "Test stage exit code: ${exitCode}"
+                    echo "Exit Code: ${exitCode}"
                 }
             }
         }
@@ -32,15 +32,14 @@ pipeline {
                 expression { fileExists('report.html') }
             }
             steps {
-                echo "Sending email..."
-                bat '"C:\\Users\\WELCOME\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" send_email.py'
+                bat 'python send_email.py'
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline completed.'
+            echo '✅ Jenkins Build Done. Email Sent if Report was found.'
         }
     }
 }

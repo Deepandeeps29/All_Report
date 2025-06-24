@@ -14,23 +14,23 @@ class TestDemo:
         page.UI()
         page.Register_Page()
         time.sleep(2)
-
-    # def test_signup_page(self):
-        page = SignupPage(self.driver)
-        page.Signup_Page()
-        time.sleep(2)
-
-    # def test_button_page(self):
-        page = Button_Page(self.driver)
-        page.click_buttons()
-        time.sleep(2)
-
-    # def test_checkbox_page(self):
-        page = Check_Page(self.driver)
-        page.Check_Box()
-        time.sleep(2)
-
-    # def test_radio_page(self):
-        page = RadioButton(self.driver)
-        page.Radio_Button()
-        time.sleep(2)
+    #
+    # # def test_signup_page(self):
+    #     page = SignupPage(self.driver)
+    #     page.Signup_Page()
+    #     time.sleep(2)
+    #
+    # # def test_button_page(self):
+    #     page = Button_Page(self.driver)
+    #     page.click_buttons()
+    #     time.sleep(2)
+    #
+    # # def test_checkbox_page(self):
+    #     page = Check_Page(self.driver)
+    #     page.Check_Box()
+    #     time.sleep(2)
+    #
+    # # def test_radio_page(self):
+    #     page = RadioButton(self.driver)
+    #     page.Radio_Button()
+    #     time.sleep(2)

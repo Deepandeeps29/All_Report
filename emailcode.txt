@@ -8,8 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: '6b5d70e7-7888-4796-a51c-ef12480e6baa', url: 'https://github.com/Deepandeeps29/All_Report.git'
-
+                git branch: 'main', url: 'https://github.com/Deepandeeps29/All_Report.git'
             }
         }
 

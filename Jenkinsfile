@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     def exitCode = bat(script: "pytest Runnerclass/test_demo_page.py --html=${REPORT_FILE} --self-contained-html", returnStatus: true)
-                    echo "⚠️ Test stage exit code: ${exitCode}"
+                    echo "Test stage exit code: ${exitCode}"
                 }
             }
         }
@@ -41,7 +41,7 @@ pipeline {
 
     post {
         always {
-            echo '✅ Pipeline finished. Email attempted.'
+            echo 'Pipeline finished. Email attempted.'
         }
     }
 }

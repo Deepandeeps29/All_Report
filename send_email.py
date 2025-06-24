@@ -21,7 +21,8 @@ def send_email():
     msg['From'] = sender
     msg['To'] = ', '.join(recipient)
     msg['Subject'] = subject
-    msg.attach(MIMEText("Test execution completed. Report attached.", 'plain'))
+    # Message Send
+    msg.attach(MIMEText("Test execution completed. Report attached.\nQspider_Demo_Module_All_Report", 'plain'))
 
     try:
         with open("report.html", "rb") as file:

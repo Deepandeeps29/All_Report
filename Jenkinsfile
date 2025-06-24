@@ -8,8 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: '6b5d70e7-7888-4796-a51c-ef12480e6baa', url: 'https://github.com/Deepandeeps29/All_Report.git'
-
+                git branch: 'main', url: 'https://github.com/Deepandeeps29/All_Report.git'
             }
         }
 
@@ -28,21 +27,20 @@ pipeline {
             }
         }
 
-        stage('Send Email Report via Python') {
+        stage('Send Email Report') {
             when {
                 expression { fileExists('report.html') }
             }
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    bat "python send_email.py"
-                }
+                echo "Sending email..."
+                bat '"C:\\Users\\WELCOME\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" send_email.py'
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline finished. Email attempted.'
+            echo 'Pipeline completed.'
         }
     }
 }

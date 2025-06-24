@@ -22,24 +22,50 @@ pipeline {
             steps {
                 script {
                     def exitCode = bat(script: "pytest Runnerclass/test_demo_page.py --html=${REPORT_FILE} --self-contained-html", returnStatus: true)
-                    echo "Exit Code: ${exitCode}"
+                    echo "Test stage exit code: ${exitCode}"
                 }
             }
         }
 
-        stage('Send Email Report') {
+        stage('Send Email Report via Python') {
             when {
-                expression { fileExists('report.html') }
+                expression { fileExists(REPORT_FILE) }
             }
             steps {
-                bat 'python send_email.py'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    bat "python send_email.py"
+                }
+            }
+        }
+
+        // 🆕 Continuous Delivery Stage
+        stage('Deploy Report to Shared Folder') {
+            when {
+                allOf {
+                    expression { fileExists(REPORT_FILE) }
+                    expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+                }
+            }
+            steps {
+                // Windows shared folder example: update path accordingly
+                bat "copy ${REPORT_FILE} \\\\192.168.1.100\\shared_reports\\%BUILD_NUMBER%_report.html"
+            }
+        }
+
+        // Optional: Make report downloadable from Jenkins itself
+        stage('Archive Report') {
+            when {
+                expression { fileExists(REPORT_FILE) }
+            }
+            steps {
+                archiveArtifacts artifacts: REPORT_FILE, fingerprint: true
             }
         }
     }
 
     post {
         always {
-            echo '✅ Jenkins Build Done. Email Sent if Report was found.'
+            echo 'Pipeline finished. Email sent, report deployed if successful.'
         }
     }
 }

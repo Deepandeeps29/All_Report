@@ -36,7 +36,9 @@ app_password = 'bhxu nskk kmyx usyf'
 
 
 
-
+git add .
+git commit -m "Trigger via webhook"
+git push
 
 (.venv) D:\Program\Python_Selenium\Qspider_Demo_Module\tests>pytest test_demo_page.py
 pip install pytest-reportportal

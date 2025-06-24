@@ -31,6 +31,6 @@ class TestDemo:
         time.sleep(2)
 
     # def test_radio_page(self):
-        page = RadioButton(self.driver)
-        page.Radio_Button()
-        time.sleep(2)
+    #     page = RadioButton(self.driver)
+    #     page.Radio_Button()
+    #     time.sleep(2)

@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-token',
+                git credentialsId: 'f695a64c-2dde-4f15-9c36-a0c6dfe600ad',
                     url: 'https://github.com/Deepandeeps29/Sample.git',
                     branch: 'main'
             }

@@ -51,7 +51,7 @@ pipeline {
 
         stage('Deploy to Server') {
             steps {
-                bat "scp -o StrictHostKeyChecking=no %REPORT_FILE% %DEPLOY_USER%@%DEPLOY_HOST%:%DEPLOY_PATH%"
+                bat '"D:\\Program\\Git\\usr\\bin\\scp.exe" -o StrictHostKeyChecking=no report.html deepan@192.168.68.115:/var/www/html/'
             }
         }
     }

@@ -3,15 +3,15 @@ pipeline {
 
     environment {
         REPORT_FILE = 'report.html'
-        DEPLOY_USER = 'deepan'                 // replace with your server's username
-        DEPLOY_HOST = '192.168.68.115'                 // replace with your server's IP
-        DEPLOY_PATH = '/var/www/html/'               // path where report.html should be deployed
+        DEPLOY_USER = 'deepan'
+        DEPLOY_HOST = '192.168.68.115'
+        DEPLOY_PATH = '/var/www/html/'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'f695a64c-2dde-4f15-9c36-a0c6dfe600ad',
+                git credentialsId: 'github-token',
                     url: 'https://github.com/Deepandeeps29/Sample.git',
                     branch: 'main'
             }
@@ -25,7 +25,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat "pytest Runnerclass/test_demo_page.py --html=${REPORT_FILE} --self-contained-html"
+                bat "pytest Runnerclass/test_demo_page.py --html=%REPORT_FILE% --self-contained-html"
             }
         }
 
@@ -51,10 +51,7 @@ pipeline {
 
         stage('Deploy to Server') {
             steps {
-                script {
-                    // Unix shell
-                    sh "scp -o StrictHostKeyChecking=no ${REPORT_FILE} ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}"
-                }
+                bat "scp -o StrictHostKeyChecking=no %REPORT_FILE% %DEPLOY_USER%@%DEPLOY_HOST%:%DEPLOY_PATH%"
             }
         }
     }

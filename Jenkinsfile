@@ -25,7 +25,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat "pytest tests/test_login.py --html=${REPORT_FILE} --self-contained-html"
+                bat "pytest Runnerclass/test_demo_page.py --html=${REPORT_FILE} --self-contained-html"
             }
         }
 

@@ -52,7 +52,6 @@ pipeline {
             }
         }
 
-        // Optional: Make report downloadable from Jenkins itself
         stage('Archive Report') {
             when {
                 expression { fileExists(REPORT_FILE) }

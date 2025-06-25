@@ -3,12 +3,17 @@ pipeline {
 
     environment {
         REPORT_FILE = 'report.html'
+        DEPLOY_USER = 'deepan'                 // replace with your server's username
+        DEPLOY_HOST = '192.168.68.115'                 // replace with your server's IP
+        DEPLOY_PATH = '/var/www/html/'               // path where report.html should be deployed
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Deepandeeps29/All_Report.git'
+                git credentialsId: 'github-token',
+                    url: 'https://github.com/Deepandeeps29/Sample.git',
+                    branch: 'main'
             }
         }
 
@@ -20,51 +25,43 @@ pipeline {
 
         stage('Run Tests') {
             steps {
+                bat "pytest tests/test_login.py --html=${REPORT_FILE} --self-contained-html"
+            }
+        }
+
+        stage('Archive and Email Report') {
+            steps {
                 script {
-                    def exitCode = bat(script: "pytest Runnerclass/test_demo_page.py --html=${REPORT_FILE} --self-contained-html", returnStatus: true)
-                    echo "Test stage exit code: ${exitCode}"
+                    archiveArtifacts artifacts: "${REPORT_FILE}", onlyIfSuccessful: true
+                    emailext(
+                        subject: "🧪 Selenium Test Report - Build #${BUILD_NUMBER}",
+                        body: """
+                            <p>Hello Team,</p>
+                            <p>Please find the attached <b>HTML Test Report</b> for Jenkins Build #${BUILD_NUMBER}.</p>
+                            <p>Regards,<br>Jenkins</p>
+                        """,
+                        to: 'deepanvinayagam1411@gmail.com',
+                        from: 'deepanvinayagam1411@gmail.com',
+                        attachLog: false,
+                        attachmentsPattern: "${REPORT_FILE}"
+                    )
                 }
             }
         }
 
-        stage('Send Email Report via Python') {
-            when {
-                expression { fileExists(REPORT_FILE) }
-            }
+        stage('Deploy to Server') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    bat "python send_email.py"
+                script {
+                    // Unix shell
+                    sh "scp -o StrictHostKeyChecking=no ${REPORT_FILE} ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}"
                 }
-            }
-        }
-
-        // 🆕 Continuous Delivery Stage
-        stage('Deploy Report to Shared Folder') {
-            when {
-                allOf {
-                    expression { fileExists(REPORT_FILE) }
-                    expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-                }
-            }
-            steps {
-                // Windows shared folder example: update path accordingly
-                bat "copy ${REPORT_FILE} \\\\192.168.1.100\\shared_reports\\%BUILD_NUMBER%_report.html"
-            }
-        }
-
-        stage('Archive Report') {
-            when {
-                expression { fileExists(REPORT_FILE) }
-            }
-            steps {
-                archiveArtifacts artifacts: REPORT_FILE, fingerprint: true
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline finished. Email sent, report deployed if successful.'
+            echo "Pipeline finished. Report generated, emailed, and deployed."
         }
     }
 }

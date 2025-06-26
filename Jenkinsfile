@@ -4,7 +4,7 @@ pipeline {
     environment {
         REPORT_FILE = 'report.html'
         DEPLOY_USER = 'deepan'
-        DEPLOY_HOST = '192.168.68.115'
+        DEPLOY_HOST = '192.168.0.104'
         DEPLOY_PATH = '/var/www/html/'
     }
 

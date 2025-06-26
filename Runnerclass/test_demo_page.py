@@ -1,5 +1,5 @@
 import pytest
-from Resources.test_Register_Page import RegisterPage
+# from Resources.test_Register_Page import RegisterPage
 # from Resources.Login import SignupPage
 from Resources.Button_Page import Button_Page
 from Resources.CheckBox_Page import Check_Page

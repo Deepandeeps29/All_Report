@@ -4,15 +4,15 @@ pipeline {
     environment {
         REPORT_FILE = 'report.html'
         DEPLOY_USER = 'deepan'
-        DEPLOY_HOST = '192.168.68.115'
+        DEPLOY_HOST = '192.168.0.104'
         DEPLOY_PATH = '/var/www/html/'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-token',
-                    url: 'https://github.com/Deepandeeps29/Sample.git',
+                git credentialsId: 'f695a64c-2dde-4f15-9c36-a0c6dfe600ad',
+                    url: 'https://github.com/Deepandeeps29/All_Report.git',
                     branch: 'main'
             }
         }
